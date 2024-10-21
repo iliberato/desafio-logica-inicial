@@ -9,6 +9,7 @@ const imageGame = document.getElementById("image-game");
 
 let secretNumber = Math.floor(Math.random() * 10) + 1;
 let score = 0;
+let scoreTotal = 0;
 let timeRemaining = 60;
 let timer;
 let nome, xp, nivel;
@@ -29,11 +30,11 @@ function startGame(characterName, image) {
 function toggleGame() {
     gameContainer.classList.toggle("block");
     if (!timer) startTimer();
- 
+
 }
 
 function startTimer() {
-   
+
     timer = setInterval(() => {
         if (timeRemaining > 0) {
             timeRemaining--;
@@ -52,38 +53,50 @@ function checkGuess() {
     let userGuess = parseInt(document.getElementById('guessInput').value);
     let resultMessage = document.getElementById('resultMessage');
     let hintMessage = document.getElementById('hintMessage');
-    
 
+        imageGame.src = "https://media1.giphy.com/media/nHMdCPquHUhhWrnmpi/giphy.gif";
+
+    
 
     if (userGuess === secretNumber) {
         resultMessage.textContent = 'Parabéns! Você acertou o número!';
         resultMessage.style.color = 'green';
         score += 10;
+        imageGame.src = "https://i.pinimg.com/originals/c5/56/b6/c556b609e5f4f31a41f102ac22e45768.gif";
         updateXPAndLevel();
         resetGame();
     } else {
         resultMessage.textContent = 'Errado! Tente novamente.';
         resultMessage.style.color = 'red';
 
-        imageGame.src = "https://media2.giphy.com/media/xUOxfgwY8Tvj1DY5y0/giphy.gif";  
-        setTimeout(() => {
-        }, 2000);
-
+        
+        
         hintMessage.textContent = userGuess > secretNumber ? 'O número secreto é menor.' : 'O número secreto é maior.';
         score -= 1;
+        setTimeout(() => {
+            imageGame.src = "https://media2.giphy.com/media/xUOxfgwY8Tvj1DY5y0/giphy.gif";
+            
+        }, 3000);
+
         updateXPAndLevel();
+    
     }
+
+
+
 }
 
 function updateXPAndLevel() {
 
-    
+    scoreTotal += score;
+
+    if (scoreTotal > score) {
+        xp = score * 500;
+    } 
+
     document.getElementById('score').textContent = score;
     document.getElementById('xp').textContent = xp;
-    
-    if (score > 0) {
-        xp = score * 500; 
-    }
+
 
     if (xp < 1000) {
         nivel = "Ferro";
